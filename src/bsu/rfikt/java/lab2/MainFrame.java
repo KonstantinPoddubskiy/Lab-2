@@ -21,8 +21,8 @@ import javax.swing.JTextField;
 // Главный класс приложения, он же класс фрейма
 public class MainFrame extends JFrame {
     // Размеры окна приложения
-    private static final int WIDTH = 400;
-    private static final int HEIGHT = 320;
+    private static final int WIDTH = 600;
+    private static final int HEIGHT = 420;
 
     // Текстовые поля для считывания значений переменных
     private JTextField textFieldX;
@@ -33,12 +33,15 @@ public class MainFrame extends JFrame {
     private ButtonGroup radioButtons = new ButtonGroup();
     // Контейнер для отображения радио-кнопок
     private Box hboxFormulaType = Box.createHorizontalBox();
+    private Box hBoxMemoryType = Box.createHorizontalBox();
 
     private int formulaId = 1;
+    //внутренняя переменная для накопления результата
+    private Double sum = new Double(0);
 
     // Формула No1 для рассчѐта
     public Double calculate1(Double x, Double y, Double z) {
-        return Math.cos(Math.sin(y) + Math.exp(Math.cos(y)) + z * z)
+        return Math.sin(Math.sin(y) + Math.exp(Math.cos(y)) + z * z)
                 * Math.pow(x * x + Math.sin(z) + Math.exp(Math.cos(z)), 1/4);
     }
 
@@ -173,6 +176,48 @@ public class MainFrame extends JFrame {
         });
 
 
+
+        JButton buttonMC = new JButton("MC");
+        buttonMC.addActionListener(new ActionListener()	{
+            public void actionPerformed(ActionEvent event) {
+                sum = (double) 0;
+                textFieldResult.setText("0");
+            }
+        });
+
+
+
+        Box hBoxMemoryField = Box.createHorizontalBox();
+        hBoxMemoryField.add(Box.createHorizontalGlue());
+
+
+        JButton buttonMp = new JButton("M+");
+        buttonMp.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                try{
+                    Double result = Double.parseDouble(textFieldResult.getText());
+                    {sum += result;
+                        textFieldResult.setText(sum.toString());}
+
+                }catch (NumberFormatException ex)
+                { JOptionPane.showMessageDialog(MainFrame.this,
+                        "Ошибка в формате записи числа с плавающей точкой", "" +
+                                "Ошибочный формат числа", JOptionPane.WARNING_MESSAGE);
+                }
+            }
+
+        });
+
+        Box hBoxControlButtons = Box.createHorizontalBox();
+        hBoxControlButtons.add(Box.createHorizontalGlue());
+        hBoxControlButtons.add(buttonMC);
+        hBoxControlButtons.add(Box.createHorizontalStrut(30));
+        hBoxControlButtons.add(buttonMp);
+        hBoxControlButtons.add(Box.createHorizontalGlue());
+
+
+
         Box hboxButtons = Box.createHorizontalBox();
         hboxButtons.add(Box.createHorizontalGlue());
         hboxButtons.add(buttonCalc);
@@ -189,6 +234,9 @@ public class MainFrame extends JFrame {
         contentBox.add(hboxVariables);
         contentBox.add(hboxResult);
         contentBox.add(hboxButtons);
+        contentBox.add(hBoxMemoryType);
+        contentBox.add(hBoxControlButtons);
+        contentBox.add(hBoxMemoryField);
         contentBox.add(Box.createVerticalGlue());
         getContentPane().add(contentBox, BorderLayout.CENTER);
     }

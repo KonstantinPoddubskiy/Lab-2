@@ -27,24 +27,24 @@ public class MainFrame extends JFrame {
     // Текстовые поля для считывания значений переменных
     private JTextField textFieldX;
     private JTextField textFieldY;
+    private JTextField textFieldZ;
     private JTextField textFieldResult;
     // Группа радио-кнопок для обеспечения уникальности выделения в группе
     private ButtonGroup radioButtons = new ButtonGroup();
     // Контейнер для отображения радио-кнопок
     private Box hboxFormulaType = Box.createHorizontalBox();
 
-
     private int formulaId = 1;
 
-
     // Формула No1 для рассчѐта
-    public Double calculate1(Double x, Double y) {
-        return x*x+y*y;
+    public Double calculate1(Double x, Double y, Double z) {
+        return Math.cos(Math.sin(y) + Math.exp(Math.cos(y)) + z * z)
+                * Math.pow(x * x + Math.sin(z) + Math.exp(Math.cos(z)), 1/4);
     }
 
     // Формула No2 для рассчѐта
-    public Double calculate2(Double x, Double y) {
-        return x*x*x+ 1/y;
+    public Double calculate2(Double x, Double y, Double z) {
+        return Math.pow(x, x)/(Math.sqrt(y*y*y + 1) + Math.log(z));
     }
 
 
@@ -91,6 +91,9 @@ public class MainFrame extends JFrame {
         JLabel labelForY = new JLabel("Y:");
         textFieldY = new JTextField("0", 10);
         textFieldY.setMaximumSize(textFieldY.getPreferredSize());
+        JLabel labelForZ = new JLabel("Z:");
+        textFieldZ = new JTextField("0", 10);
+        textFieldZ.setMaximumSize(textFieldZ.getPreferredSize());
 
 
 
@@ -107,6 +110,10 @@ public class MainFrame extends JFrame {
         hboxVariables.add(labelForY);
         hboxVariables.add(Box.createHorizontalStrut(10));
         hboxVariables.add(textFieldY);
+        hboxVariables.add(Box.createHorizontalStrut(50));
+        hboxVariables.add(labelForZ);
+        hboxVariables.add(Box.createHorizontalStrut(10));
+        hboxVariables.add(textFieldZ);
         hboxVariables.add(Box.createHorizontalGlue());
 
         // Создать область для вывода результата
@@ -132,14 +139,14 @@ public class MainFrame extends JFrame {
                 try {
                     Double x = Double.parseDouble(textFieldX.getText());
                     Double y = Double.parseDouble(textFieldY.getText());
-
+                    Double z = Double.parseDouble(textFieldZ.getText());
                     Double result;
 
                     if (formulaId==1)
-                        result = calculate1(x, y);
+                        result = calculate1(x, y, z);
 
                     else
-                        result = calculate2(x, y);
+                        result = calculate2(x, y, z);
 
                     textFieldResult.setText(result.toString());
 
@@ -160,11 +167,10 @@ public class MainFrame extends JFrame {
             public void actionPerformed(ActionEvent ev) {
                 textFieldX.setText("0");
                 textFieldY.setText("0");
+                textFieldZ.setText("0");
                 textFieldResult.setText("0");
             }
         });
-
-
 
 
         Box hboxButtons = Box.createHorizontalBox();
@@ -198,3 +204,12 @@ public class MainFrame extends JFrame {
     }
 
 }
+
+
+
+
+
+
+
+
+
